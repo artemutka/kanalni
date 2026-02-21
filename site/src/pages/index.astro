@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Features from '../components/Features.astro';
 import CalculatorWidget from '../components/CalculatorWidget.astro';
+import BrandsMarquee from '../components/BrandsMarquee.astro';
+import GlobalFaq from '../components/GlobalFaq.astro';
 import Testimonials from '../components/Testimonials.astro';
 import { Icon } from 'astro-icon/components';
 import { business, yearsInBusiness } from '../data/business';
@@ -264,6 +266,9 @@ const schema = {
       </div>
     </div>
   </section>
+
+  <!-- ============ GLOBAL FAQ ============ -->
+  <GlobalFaq />
 
   <!-- ============ CTA BANNER ============ -->
   <section class="bg-slate-900 py-20 lg:py-24 relative overflow-hidden">

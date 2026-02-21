@@ -1,0 +1,66 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const faqs = [
+  {
+    question: "Чим канальний кондиціонер кращий за звичайні настінні?",
+    answer: "Канальна система є 'невидимою' — всі робочі агрегати заховані за стелею або в підсобному приміщенні, а в кімнаті видно лише акуратні решітки. Вона забезпечує більш рівномірне охолодження/обігрів всього будинку без прямих потоків холодного повітря на людей."
+  },
+  {
+    question: "Чи можна встановити канальний кондиціонер у квартирі з готовим ремонтом?",
+    answer: "Зазвичай канальне кондиціонування монтується на етапі чорнового ремонту, оскільки вимагає прокладання повітроводів під стелею (стеля опускається на 20-30 см). Однак у деяких випадках можливий частковий монтаж у коридорі чи гардеробній з розведенням над дверима без суттєвого пошкодження ремонту. Для точної відповіді потрібен огляд вашого об'єкту."
+  },
+  {
+    question: "Чи може канальний кондиціонер обігрівати будинок взимку?",
+    answer: "Так! Сучасні канальні інверторні системи працюють як високоефективні теплові насоси 'повітря-повітря'. Більшість моделей преміум та середнього класу стабільно та економно обігрівають приміщення при температурі на вулиці до -15°C, -20°C, а деякі — навіть до -30°C."
+  },
+  {
+    question: "Чи подає канальний кондиціонер свіже повітря з вулиці?",
+    answer: "Сам по собі кондиціонер лише охолоджує або нагріває повітря всередині приміщення. Але до канальної системи можна легко підключити систему припливної вентиляції. Тоді ви отримаєте '2 в 1' — і комфортну температуру, і постійний приплив свіжого, очищеного повітря з вулиці."
+  }
+];
+
+// Build FAQPage JSON-LD schema for Homepage
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+};
+---
+
+<section class="mx-auto max-w-4xl px-5 py-20 lg:py-32 lg:px-8">
+  <div class="text-center mb-12">
+    <h2 class="font-display text-3xl text-slate-900 sm:text-4xl tracking-tight">
+      Часті запитання
+    </h2>
+    <p class="mt-4 text-slate-500">
+      Відповіді на найпопулярніші питання щодо канального кондиціонування.
+    </p>
+  </div>
+
+  <div class="space-y-4">
+    {faqs.map((faq) => (
+      <details class="group rounded-2xl border border-slate-200 bg-white transition-all hover:border-brand-300 hover:shadow-sm">
+        <summary class="flex cursor-pointer items-center justify-between gap-4 px-6 py-5 text-base font-medium text-slate-900 [&::-webkit-details-marker]:hidden [&::marker]:hidden">
+          <span>{faq.question}</span>
+          <Icon
+            name="lucide:chevron-down"
+            class="size-5 shrink-0 text-slate-400 transition-transform duration-200 group-open:rotate-180"
+          />
+        </summary>
+        <div class="border-t border-slate-100 px-6 py-5 text-sm leading-relaxed text-slate-600">
+          {faq.answer}
+        </div>
+      </details>
+    ))}
+  </div>
+</section>
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
