@@ -297,10 +297,31 @@ import { serviceAreas } from '../data/serviceAreas';
   const successMsg = document.getElementById('contact-success');
   const submitBtn = document.getElementById('contact-submit-btn') as HTMLButtonElement | null;
   const submitText = submitBtn?.querySelector('span');
+  const phoneInput = form?.querySelector('input[name="phone"]') as HTMLInputElement | null;
 
-  if (form) {
+  if (form && phoneInput) {
+    // Clear custom error when user starts typing
+    phoneInput.addEventListener('input', () => {
+      phoneInput.setCustomValidity('');
+    });
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      
+      // Phone validation
+      const digitsOnly = phoneInput.value.replace(/\D/g, '');
+      let isValid = false;
+      if (digitsOnly.length === 10 && digitsOnly.startsWith('0')) {
+        isValid = true;
+      } else if (digitsOnly.length === 12 && digitsOnly.startsWith('380')) {
+        isValid = true;
+      }
+
+      if (!isValid) {
+        phoneInput.setCustomValidity('Введіть коректний український номер (рівно 10 цифр, наприклад: 050 123 45 67)');
+        phoneInput.reportValidity();
+        return;
+      }
       
       if (submitBtn) submitBtn.disabled = true;
       if (submitText) submitText.innerText = 'Відправка...';
