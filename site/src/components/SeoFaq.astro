@@ -1,0 +1,56 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { ServiceArea } from '../data/serviceAreas';
+import type { ServiceType } from '../data/serviceTypes';
+import { generateFaqs } from '../data/seoContent';
+
+interface Props {
+  area: ServiceArea;
+  service?: ServiceType;
+}
+
+const { area, service } = Astro.props;
+
+const faqs = generateFaqs(service?.slug, area.name);
+
+const heading = service
+  ? `Часті запитання про ${service.name} в ${area.name}`
+  : `Часті запитання про канальне кондиціювання в ${area.name}`;
+
+// Build FAQPage JSON-LD schema
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+};
+---
+
+<section class="mx-auto max-w-3xl px-5 py-16 lg:px-8">
+  <h2 class="font-display text-3xl text-slate-900 sm:text-4xl tracking-tight">
+    {heading}
+  </h2>
+
+  <div class="mt-8 space-y-3">
+    {faqs.map((faq) => (
+      <details class="group rounded-2xl border border-slate-200 bg-white transition-all hover:border-brand-300 hover:shadow-sm">
+        <summary class="flex cursor-pointer items-center justify-between gap-4 px-6 py-5 text-base font-medium text-slate-900 [&::-webkit-details-marker]:hidden [&::marker]:hidden">
+          <span>{faq.question}</span>
+          <Icon
+            name="lucide:chevron-down"
+            class="size-5 shrink-0 text-slate-400 transition-transform duration-200 group-open:rotate-180"
+          />
+        </summary>
+        <div class="border-t border-slate-100 px-6 py-5 text-sm leading-relaxed text-slate-600" set:html={faq.answer} />
+      </details>
+    ))}
+  </div>
+</section>
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

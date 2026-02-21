@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://kanalni.if.ua/sitemap-index.xml

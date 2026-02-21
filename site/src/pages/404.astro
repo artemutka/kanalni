@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<BaseLayout title="Сторінку не знайдено - 404" description="Ця сторінка не існує або була переміщена.">
+  <div class="flex min-h-[75vh] flex-col items-center justify-center px-5 py-24 text-center lg:px-8">
+    <div class="mb-4 flex flex-col items-center justify-center">
+      <img
+        src="/images/404-yeti.png"
+        alt="Чубаці жарко без кондиціонера"
+        class="w-full max-w-xs drop-shadow-sm md:max-w-md"
+      />
+    </div>
+    
+    <h1 class="font-display text-7xl font-bold tracking-tight text-slate-900 lg:text-9xl">
+      404
+    </h1>
+    
+    <p class="mt-4 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+      Фух, тут занадто спекотно!
+    </p>
+    
+    <p class="mt-5 max-w-lg text-lg leading-relaxed text-slate-600">
+      Схоже, цей повітропровід веде в нікуди. Потік прохолодного повітря сюди не дістає, бо сторінки, яку ви шукаєте, просто не існує.
+    </p>
+    
+    <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 rounded-xl bg-brand-500 px-6 py-3.5 text-[15px] font-semibold text-white shadow-sm transition-all hover:bg-brand-600 hover:shadow-md hover:shadow-brand-500/20 active:scale-95"
+      >
+        <Icon name="lucide:home" class="size-5" />
+        Повернутись в прохолоду
+      </a>
+      
+      <a
+        href="/services/"
+        class="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3.5 text-[15px] font-semibold text-slate-700 ring-1 ring-inset ring-slate-200 transition-all hover:bg-slate-50 active:scale-95"
+      >
+        <Icon name="lucide:wrench" class="size-5 text-slate-400" />
+        Може, потрібен монтаж?
+      </a>
+    </div>
+  </div>
+</BaseLayout>

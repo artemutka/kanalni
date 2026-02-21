@@ -1,0 +1,161 @@
+---
+import { Icon } from 'astro-icon/components';
+import { business } from '../data/business';
+---
+
+<header
+  class="sticky top-0 z-50 w-full border-b border-stone-200/60 bg-white/80 backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-300"
+  id="site-header"
+>
+  <!-- Main nav bar -->
+  <div class="mx-auto flex min-h-[5rem] py-3 max-w-7xl items-center justify-between px-5 lg:px-8">
+    <!-- Logo -->
+    <a href="/" class="group flex flex-col items-center justify-center gap-0 transition-transform hover:scale-105 duration-300">
+      <div class="w-full flex flex-col gap-[3px] lg:gap-[4px] mb-[4px] lg:mb-1.5 px-0.5">
+        <div class="h-[4px] lg:h-[5px] w-full bg-slate-800 rounded-sm"></div>
+        <div class="h-[4px] lg:h-[5px] w-full bg-slate-800 rounded-sm"></div>
+      </div>
+      <span class="font-display text-2xl lg:text-3xl font-bold tracking-tight text-slate-800 leading-none">
+        Канальні
+      </span>
+      <span class="text-[9px] lg:text-[11px] font-bold uppercase tracking-[0.25em] text-brand-500 mt-1 lg:mt-1.5 ml-1">
+        кондиціювання
+      </span>
+    </a>
+
+    <!-- Desktop navigation -->
+    <nav class="hidden items-center gap-1 lg:flex">
+      <a
+        href="/"
+        class="rounded-lg px-3.5 py-2 text-sm font-medium text-stone-600 transition-colors hover:bg-brand-50 hover:text-brand-800"
+      >
+        Головна
+      </a>
+      <a
+        href="/services/"
+        class="rounded-lg px-3.5 py-2 text-sm font-medium text-stone-600 transition-colors hover:bg-brand-50 hover:text-brand-800"
+      >
+        Послуги
+      </a>
+      <a
+        href="/areas/"
+        class="rounded-lg px-3.5 py-2 text-sm font-medium text-stone-600 transition-colors hover:bg-brand-50 hover:text-brand-800"
+      >
+        Райони
+      </a>
+      <a
+        href="/blog/"
+        class="rounded-lg px-3.5 py-2 text-sm font-medium text-stone-600 transition-colors hover:bg-brand-50 hover:text-brand-800"
+      >
+        Блог
+      </a>
+      <a
+        href="/contact/"
+        class="rounded-lg px-3.5 py-2 text-sm font-medium text-stone-600 transition-colors hover:bg-brand-50 hover:text-brand-800"
+      >
+        Контакти
+      </a>
+    </nav>
+
+    <!-- Right side actions -->
+    <div class="flex items-center gap-2">
+      <!-- Form CTA -->
+      <a
+        href="/contact/"
+        class="inline-flex items-center gap-2 rounded-lg bg-brand-800 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-brand-700 hover:shadow-md"
+      >
+        <Icon name="lucide:message-square" class="size-4" />
+        <span class="hidden sm:inline">Отримати консультацію</span>
+        <span class="sm:hidden">Консультація</span>
+      </a>
+
+      <!-- Mobile menu button -->
+      <button
+        type="button"
+        class="inline-flex size-10 items-center justify-center rounded-lg text-stone-500 transition-colors hover:bg-stone-100 hover:text-stone-700 lg:hidden"
+        aria-label="Toggle menu"
+        id="mobile-menu-btn"
+      >
+        <Icon name="lucide:menu" class="size-5" id="menu-icon-open" />
+        <Icon name="lucide:x" class="hidden size-5" id="menu-icon-close" />
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="hidden border-t border-stone-100 bg-white lg:hidden" id="mobile-menu">
+    <nav class="mx-auto max-w-7xl space-y-1 px-5 py-4">
+      <a
+        href="/"
+        class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-stone-700 transition-colors hover:bg-brand-50 hover:text-brand-800"
+      >
+        <Icon name="lucide:home" class="size-4 text-stone-400" />
+        Головна
+      </a>
+      <a
+        href="/services/"
+        class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-stone-700 transition-colors hover:bg-brand-50 hover:text-brand-800"
+      >
+        <Icon name="lucide:wrench" class="size-4 text-stone-400" />
+        Послуги
+      </a>
+      <a
+        href="/areas/"
+        class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-stone-700 transition-colors hover:bg-brand-50 hover:text-brand-800"
+      >
+        <Icon name="lucide:map-pin" class="size-4 text-stone-400" />
+        Райони
+      </a>
+      <a
+        href="/blog/"
+        class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-stone-700 transition-colors hover:bg-brand-50 hover:text-brand-800"
+      >
+        <Icon name="lucide:book-open" class="size-4 text-stone-400" />
+        Блог
+      </a>
+      <a
+        href="/contact/"
+        class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-stone-700 transition-colors hover:bg-brand-50 hover:text-brand-800"
+      >
+        <Icon name="lucide:mail" class="size-4 text-stone-400" />
+        Контакти
+      </a>
+      <div class="pt-2">
+        <a
+          href="/contact/"
+          class="flex w-full items-center justify-center gap-2 rounded-lg bg-brand-800 px-4 py-2.5 text-sm font-medium text-white"
+        >
+          <Icon name="lucide:message-square" class="size-4" />
+          Отримати консультацію
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('menu-icon-open');
+  const iconClose = document.getElementById('menu-icon-close');
+
+  btn?.addEventListener('click', () => {
+    menu?.classList.toggle('hidden');
+    iconOpen?.classList.toggle('hidden');
+    iconClose?.classList.toggle('hidden');
+  });
+
+  // Add shadow on scroll
+  const header = document.getElementById('site-header');
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (window.scrollY > 8) {
+        header?.classList.add('shadow-sm');
+      } else {
+        header?.classList.remove('shadow-sm');
+      }
+    },
+    { passive: true },
+  );
+</script>

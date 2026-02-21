@@ -1,0 +1,237 @@
+---
+import { Icon } from 'astro-icon/components';
+import { business, yearsInBusiness } from '../../data/business';
+import { serviceTypes } from '../../data/serviceTypes';
+import { serviceAreas, getAreaBySlug, getNearbyAreas } from '../../data/serviceAreas';
+import { serviceUrl, areaUrl, comboUrl, contactUrl } from '../../lib/urls';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import SeoFaq from '../../components/SeoFaq.astro';
+import SeoTestimonials from '../../components/SeoTestimonials.astro';
+
+import type { ServiceArea } from '../../data/serviceAreas';
+
+export function getStaticPaths() {
+  return serviceAreas.map((area) => ({
+    params: { area: area.slug },
+    props: { area },
+  }));
+}
+
+interface Props {
+  area: ServiceArea;
+}
+
+const { area } = Astro.props;
+
+const nearbyAreas = getNearbyAreas(area.slug);
+
+const pageTitle = `Канальне кондиціювання ${area.name} | ${business.name}`;
+const metaDescription = `Канальне кондиціювання в ${area.name}, ${area.county}. ${business.name} підбере перевіреного підрядника. Безкоштовна консультація.`;
+
+// Build LocalBusiness schema
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'HVACBusiness',
+  name: business.name,
+  description: `${business.name} — канальне кондиціювання в ${area.name}, ${area.county}.`,
+  telephone: business.phone,
+  url: business.siteUrl,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: area.name,
+    addressRegion: area.state,
+    postalCode: area.zipCodes[0],
+    addressCountry: 'UA',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: area.lat,
+    longitude: area.lng,
+  },
+  areaServed: [
+    {
+      '@type': 'City',
+      name: area.name,
+    },
+    {
+      '@type': 'AdministrativeArea',
+      name: area.county,
+    },
+  ],
+};
+---
+
+<BaseLayout title={pageTitle} description={metaDescription} schema={schema}>
+  <Breadcrumbs
+    crumbs={[
+      { label: 'Райони', href: '/areas/' },
+      { label: area.name },
+    ]}
+  />
+
+  <!-- Hero section -->
+  <section class="mx-auto max-w-7xl px-5 pb-12 pt-8 lg:px-8">
+    <div class="grid gap-8 lg:grid-cols-3 lg:gap-12">
+      {/* Main content */}
+      <div class="lg:col-span-2">
+        <h1 class="font-display text-4xl text-brand-900 sm:text-5xl lg:text-6xl tracking-tight">
+          Канальне кондиціювання в {area.name}
+        </h1>
+
+        <p class="mt-6 text-lg leading-relaxed text-stone-600">
+          {area.description}
+        </p>
+
+        <p class="mt-4 text-stone-600">
+          {business.name} допомагає мешканцям {area.name} та {area.county} знайти перевірених
+          підрядників для канального кондиціювання. Заповніть форму і отримайте до 3 безкоштовних пропозицій.
+        </p>
+      </div>
+
+      {/* Quick facts sidebar */}
+      <div class="lg:col-span-1">
+        <div class="rounded-xl border border-stone-200/60 bg-white p-6 shadow-sm">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-stone-400">
+            Коротко про район
+          </h2>
+
+          <dl class="mt-4 space-y-4">
+            <div>
+              <dt class="text-xs font-medium uppercase tracking-wide text-stone-400">Район</dt>
+              <dd class="mt-0.5 text-sm font-semibold text-stone-800">{area.county}</dd>
+            </div>
+
+            <div>
+              <dt class="text-xs font-medium uppercase tracking-wide text-stone-400">Населення</dt>
+              <dd class="mt-0.5 text-sm font-semibold text-stone-800">
+                {area.population.toLocaleString()}
+              </dd>
+            </div>
+
+            <div>
+              <dt class="text-xs font-medium uppercase tracking-wide text-stone-400">Поштові індекси</dt>
+              <dd class="mt-0.5 text-sm font-semibold text-stone-800">
+                {area.zipCodes.join(', ')}
+              </dd>
+            </div>
+          </dl>
+
+          <div class="mt-6 border-t border-stone-100 pt-5">
+            <a
+              href="/contact/"
+              class="flex w-full items-center justify-center gap-2 rounded-lg bg-brand-800 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-brand-700"
+            >
+              <Icon name="lucide:message-square" class="size-4" />
+              Отримати консультацію
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services available in this area -->
+  <section class="border-t border-stone-200/60 bg-white py-16">
+    <div class="mx-auto max-w-7xl px-5 lg:px-8">
+      <h2 class="font-display text-2xl text-brand-900 sm:text-3xl">
+        Послуги в {area.name}
+      </h2>
+      <p class="mt-3 max-w-2xl text-stone-600">
+        Повний спектр послуг з канального кондиціювання.
+        Оберіть послугу нижче для деталей в {area.name}.
+      </p>
+
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {serviceTypes.map((service) => (
+          <a
+            href={comboUrl(area.slug, service.slug)}
+            class="group rounded-xl border border-stone-200/60 bg-stone-50 p-5 transition-all hover:border-brand-200 hover:bg-white hover:shadow-md"
+          >
+            <div class="flex items-center justify-between">
+              <Icon name={service.icon} class="size-6 text-brand-600" />
+              {service.emergency && (
+                <span class="rounded-full bg-red-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-red-600 ring-1 ring-red-200/60">
+                  Терміново
+                </span>
+              )}
+            </div>
+
+            <h3 class="mt-3 text-base font-semibold text-stone-800 group-hover:text-brand-800">
+              {service.name}
+            </h3>
+
+            <p class="mt-1.5 text-sm leading-relaxed text-stone-500">
+              {service.description}
+            </p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Nearby areas -->
+  {nearbyAreas.length > 0 && (
+    <section class="mx-auto max-w-7xl px-5 py-16 lg:px-8">
+      <h2 class="font-display text-2xl text-brand-900 sm:text-3xl">
+        Сусідні райони
+      </h2>
+      <p class="mt-3 max-w-2xl text-stone-600">
+        Окрім {area.name}, ми також працюємо з підрядниками в цих районах.
+      </p>
+
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {nearbyAreas.map((nearby) => (
+          <a
+            href={areaUrl(nearby.slug)}
+            class="group rounded-xl border border-stone-200/60 bg-white p-5 transition-all hover:border-brand-200 hover:shadow-md"
+          >
+            <div class="flex items-center gap-3">
+              <Icon name="lucide:map-pin" class="size-5 text-brand-500" />
+              <span class="font-semibold text-stone-800 group-hover:text-brand-800">
+                {nearby.name}
+              </span>
+            </div>
+            <p class="mt-2 text-sm text-stone-500">
+              {nearby.county}
+            </p>
+            <p class="mt-1 text-xs text-stone-400">
+              Населення: {nearby.population.toLocaleString()}
+            </p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- FAQ section -->
+  <div class="border-t border-stone-200/60 bg-white">
+    <SeoFaq area={area} />
+  </div>
+
+  <!-- Testimonials section -->
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <SeoTestimonials area={area} />
+  </div>
+
+  <!-- CTA section -->
+  <section class="mt-16 bg-brand-900 py-16">
+    <div class="mx-auto max-w-4xl px-5 text-center lg:px-8">
+      <h2 class="font-display text-2xl text-white sm:text-3xl">
+        Потрібне кондиціювання в {area.name}?
+      </h2>
+      <p class="mx-auto mt-4 max-w-2xl text-brand-200">
+        Заповніть форму і отримайте до 3 пропозицій від перевірених підрядників {area.name}. Безкоштовно.
+      </p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a
+          href={contactUrl()}
+          class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-brand-900 shadow-sm transition-all hover:bg-stone-100 hover:shadow-md"
+        >
+          <Icon name="lucide:message-square" class="size-4" />
+          Отримати консультацію
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

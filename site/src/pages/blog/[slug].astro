@@ -1,0 +1,145 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { blogUrl, contactUrl } from '../../lib/urls';
+import { business } from '../../data/business';
+import { Icon } from 'astro-icon/components';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const categoryColors: Record<string, { bg: string; text: string }> = {
+  emergency: { bg: 'bg-red-100', text: 'text-red-700' },
+  tips: { bg: 'bg-brand-100', text: 'text-brand-700' },
+  maintenance: { bg: 'bg-amber-100', text: 'text-amber-700' },
+  news: { bg: 'bg-stone-200', text: 'text-stone-700' },
+};
+
+const colors = categoryColors[post.data.category] || categoryColors.news;
+
+function formatDate(iso: string): string {
+  const date = new Date(iso + 'T00:00:00');
+  return date.toLocaleDateString('uk-UA', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+// BlogPosting JSON-LD schema
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.publishDate,
+  author: {
+    '@type': 'Organization',
+    name: post.data.author,
+    url: business.siteUrl,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: business.name,
+    url: business.siteUrl,
+    telephone: business.phone,
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': `${business.siteUrl}${blogUrl(post.id)}`,
+  },
+};
+---
+
+<BaseLayout
+  title={`${post.data.title} | ${business.name}`}
+  description={post.data.description}
+  canonicalUrl={`${business.siteUrl}${blogUrl(post.id)}`}
+  schema={schema}
+>
+  <Breadcrumbs
+    crumbs={[
+      { label: 'Блог', href: '/blog/' },
+      { label: post.data.title },
+    ]}
+  />
+
+  <article class="mx-auto max-w-3xl px-5 py-10 lg:px-8 lg:py-16">
+    <!-- Article header -->
+    <header class="pb-8">
+      <div class="flex flex-wrap items-center gap-3">
+        <span class={`inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize ${colors.bg} ${colors.text}`}>
+          {post.data.category}
+        </span>
+        {post.data.readingTime && (
+          <span class="flex items-center gap-1 text-xs text-stone-400">
+            <Icon name="lucide:clock" class="size-3" />
+            {post.data.readingTime}
+          </span>
+        )}
+      </div>
+
+      <h1 class="mt-4 font-display text-3xl text-brand-900 sm:text-4xl">
+        {post.data.title}
+      </h1>
+
+      <div class="mt-4 flex items-center gap-3 text-sm text-stone-500">
+        <div class="flex items-center gap-1.5">
+          <Icon name="lucide:calendar" class="size-4" />
+          <time datetime={post.data.publishDate}>
+            {formatDate(post.data.publishDate)}
+          </time>
+        </div>
+        <span class="text-stone-300">|</span>
+        <div class="flex items-center gap-1.5">
+          <Icon name="lucide:user" class="size-4" />
+          <span>{post.data.author}</span>
+        </div>
+      </div>
+
+      {post.data.tags.length > 0 && (
+        <div class="mt-4 flex flex-wrap gap-2">
+          {post.data.tags.map((tag: string) => (
+            <span class="rounded-full border border-stone-200 bg-stone-50 px-2.5 py-0.5 text-xs text-stone-500">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <!-- Article body -->
+    <div class="prose-editorial">
+      <Content />
+    </div>
+
+    <!-- CTA at bottom of every post -->
+    <div class="mt-12 rounded-xl border border-brand-200 bg-brand-50 p-6 lg:p-8">
+      <h2 class="font-display text-xl text-brand-900">
+        Потрібна консультація?
+      </h2>
+      <p class="mt-2 text-sm text-stone-600">
+        Якщо у вас є питання або потрібна допомога з вибором системи кондиціювання,
+        залиште заявку. Ми працюємо по всьому {business.address.city}.
+      </p>
+      <div class="mt-5 flex flex-wrap gap-4">
+        <a
+          href={contactUrl()}
+          class="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow transition-colors hover:bg-brand-800"
+        >
+          <Icon name="lucide:message-square" class="size-4" />
+          Отримати безкоштовну консультацію
+        </a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

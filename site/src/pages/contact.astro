@@ -1,0 +1,278 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { Icon } from 'astro-icon/components';
+import { business } from '../data/business';
+import { serviceTypes } from '../data/serviceTypes';
+import { serviceAreas } from '../data/serviceAreas';
+---
+
+<BaseLayout
+  title={`Отримати консультацію | ${business.name}`}
+  description={`Заповніть форму і отримайте Залиште заявку і ми підберемо перевірених підрядників, які нададуть вам пропозицію чи декілька. Безкоштовно.`}
+>
+  <Breadcrumbs crumbs={[{ label: 'Контакти' }]} />
+
+  <!-- ============ HEADER ============ -->
+  <section class="py-12 lg:py-16">
+    <div class="mx-auto max-w-7xl px-5 lg:px-8">
+      <div class="max-w-3xl animate-fade-up">
+        <h1 class="font-display text-4xl text-brand-900 sm:text-5xl">
+          Отримати консультацію
+        </h1>
+        <p class="mt-4 text-lg leading-relaxed text-stone-600">
+          Заповніть форму і ми підберемо до 3 пропозицій від перевірених підрядників
+          канального кондиціювання в Івано-Франківську. Це безкоштовно і ні до чого не зобов'язує.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FORM + CONTACT INFO ============ -->
+  <section class="pb-16 lg:pb-24">
+    <div class="mx-auto max-w-7xl px-5 lg:px-8">
+      <div class="grid gap-12 lg:grid-cols-5 lg:gap-16">
+        <!-- Left: Contact Form (3 cols) -->
+        <div class="lg:col-span-3">
+          <div class="rounded-xl border border-stone-200 bg-white p-6 sm:p-8">
+            <h2 class="font-display text-2xl text-brand-900">Розкажіть про ваш проект</h2>
+            <p class="mt-2 text-sm text-stone-500">
+              Заповніть форму і ми підберемо до 3 пропозицій від перевірених підрядників Івано-Франківська.
+            </p>
+
+            <!-- Static form: replace action with API endpoint when ready -->
+            <form action="#" method="POST" class="mt-8 space-y-6">
+              <!-- Name + Phone row -->
+              <div class="grid gap-6 sm:grid-cols-2">
+                <div>
+                  <label for="name" class="block text-sm font-medium text-stone-700">
+                    Ім'я <span class="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    placeholder="Ваше ім'я"
+                    class="mt-1.5 w-full rounded-lg border border-stone-300 px-4 py-2.5 text-sm text-stone-900 placeholder-stone-400 transition-colors focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label for="phone" class="block text-sm font-medium text-stone-700">
+                    Телефон <span class="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    required
+                    placeholder="+380 XX XXX XXXX"
+                    class="mt-1.5 w-full rounded-lg border border-stone-300 px-4 py-2.5 text-sm text-stone-900 placeholder-stone-400 transition-colors focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div>
+                <label for="email" class="block text-sm font-medium text-stone-700">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="email@example.com"
+                  class="mt-1.5 w-full rounded-lg border border-stone-300 px-4 py-2.5 text-sm text-stone-900 placeholder-stone-400 transition-colors focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
+                />
+              </div>
+
+              <!-- Property type + Area row -->
+              <div class="grid gap-6 sm:grid-cols-2">
+                <div>
+                  <label for="property-type" class="block text-sm font-medium text-stone-700">
+                    Тип об'єкта
+                  </label>
+                  <select
+                    id="property-type"
+                    name="property-type"
+                    class="mt-1.5 w-full rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm text-stone-900 transition-colors focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
+                  >
+                    <option value="">Оберіть тип</option>
+                    <option value="apartment">Квартира</option>
+                    <option value="house">Будинок</option>
+                    <option value="office">Офіс</option>
+                    <option value="commercial">Комерційне приміщення</option>
+                    <option value="other">Інше</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="area-size" class="block text-sm font-medium text-stone-700">
+                    Площа (м2)
+                  </label>
+                  <input
+                    type="number"
+                    id="area-size"
+                    name="area-size"
+                    placeholder="напр. 80"
+                    class="mt-1.5 w-full rounded-lg border border-stone-300 px-4 py-2.5 text-sm text-stone-900 placeholder-stone-400 transition-colors focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <!-- Service + District row -->
+              <div class="grid gap-6 sm:grid-cols-2">
+                <div>
+                  <label for="service" class="block text-sm font-medium text-stone-700">
+                    Потрібна послуга
+                  </label>
+                  <select
+                    id="service"
+                    name="service"
+                    class="mt-1.5 w-full rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm text-stone-900 transition-colors focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
+                  >
+                    <option value="">Оберіть послугу</option>
+                    {serviceTypes.map((service) => (
+                      <option value={service.slug}>{service.name}</option>
+                    ))}
+                    <option value="other">Не впевнений / Інше</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="area" class="block text-sm font-medium text-stone-700">
+                    Ваш район
+                  </label>
+                  <select
+                    id="area"
+                    name="area"
+                    class="mt-1.5 w-full rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm text-stone-900 transition-colors focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
+                  >
+                    <option value="">Оберіть район</option>
+                    {serviceAreas.map((area) => (
+                      <option value={area.slug}>{area.name}</option>
+                    ))}
+                    <option value="other">Інша локація</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Message -->
+              <div>
+                <label for="message" class="block text-sm font-medium text-stone-700">
+                  Повідомлення
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="4"
+                  placeholder="Опишіть ваш проект або задайте питання..."
+                  class="mt-1.5 w-full rounded-lg border border-stone-300 px-4 py-2.5 text-sm text-stone-900 placeholder-stone-400 transition-colors focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
+                ></textarea>
+              </div>
+
+              <!-- Submit -->
+              <button
+                type="submit"
+                class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-800 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-brand-700 hover:shadow-md sm:w-auto"
+              >
+                <Icon name="lucide:send" class="size-4" />
+                Отримати безкоштовну консультацію
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Right: Info Card (2 cols) -->
+        <div class="lg:col-span-2">
+          <div class="rounded-xl border border-stone-200 bg-white p-6 sm:p-8">
+            <h2 class="font-display text-2xl text-brand-900">Як це працює</h2>
+
+            <ul class="mt-6 space-y-5">
+              <li class="flex items-start gap-3">
+                <div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-brand-50">
+                  <Icon name="lucide:clipboard-list" class="size-5 text-brand-700" />
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-stone-700">1. Заповніть форму</p>
+                  <p class="text-sm text-stone-600">
+                    Опишіть ваш об'єкт та потреби. Це займе лише 2 хвилини.
+                  </p>
+                </div>
+              </li>
+
+              <li class="flex items-start gap-3">
+                <div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-brand-50">
+                  <Icon name="lucide:users" class="size-5 text-brand-700" />
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-stone-700">2. Отримайте пропозиції</p>
+                  <p class="text-sm text-stone-600">
+                    Протягом 24 годин вам зателефонують до 3 перевірених підрядників.
+                  </p>
+                </div>
+              </li>
+
+              <li class="flex items-start gap-3">
+                <div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-brand-50">
+                  <Icon name="lucide:circle-check" class="size-5 text-brand-700" />
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-stone-700">3. Оберіть найкраще</p>
+                  <p class="text-sm text-stone-600">
+                    Порівняйте ціни, умови та відгуки. Оберіть того, хто підходить.
+                  </p>
+                </div>
+              </li>
+
+              <!-- Email -->
+              <li class="flex items-start gap-3">
+                <div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-brand-50">
+                  <Icon name="lucide:mail" class="size-5 text-brand-700" />
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-stone-700">Email</p>
+                  <a
+                    href={`mailto:${business.email}`}
+                    class="text-sm text-brand-700 transition-colors hover:text-brand-900"
+                  >
+                    {business.email}
+                  </a>
+                </div>
+              </li>
+
+              <!-- Hours -->
+              <li class="flex items-start gap-3">
+                <div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-brand-50">
+                  <Icon name="lucide:clock" class="size-5 text-brand-700" />
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-stone-700">Години роботи</p>
+                  <div class="mt-1 space-y-0.5 text-sm text-stone-600">
+                    {business.hours.map((schedule) => (
+                      <p>
+                        <span class="font-medium">{schedule.days}:</span> {schedule.hours}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              </li>
+            </ul>
+
+            <!-- Free note -->
+            <div class="mt-8 rounded-lg border border-brand-200 bg-brand-50 p-4">
+              <div class="flex items-start gap-3">
+                <Icon name="lucide:gift" class="mt-0.5 size-5 shrink-0 text-brand-600" />
+                <div>
+                  <p class="text-sm font-semibold text-brand-800">Безкоштовно</p>
+                  <p class="mt-1 text-sm text-brand-700">
+                    Наш сервіс повністю безкоштовний для клієнтів.
+                    Ви нічим не ризикуєте і ні до чого не зобов'язуєтесь.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

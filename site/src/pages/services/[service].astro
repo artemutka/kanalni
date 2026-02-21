@@ -1,0 +1,176 @@
+---
+import { Icon } from 'astro-icon/components';
+import { business, yearsInBusiness } from '../../data/business';
+import { serviceTypes, getServiceBySlug } from '../../data/serviceTypes';
+import { serviceAreas, getAreaBySlug } from '../../data/serviceAreas';
+import { serviceUrl, areaUrl, comboUrl, contactUrl } from '../../lib/urls';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+
+import type { ServiceType } from '../../data/serviceTypes';
+
+export function getStaticPaths() {
+  return serviceTypes.map((service) => ({
+    params: { service: service.slug },
+    props: { service },
+  }));
+}
+
+interface Props {
+  service: ServiceType;
+}
+
+const { service } = Astro.props;
+
+const pageTitle = `${service.name} в Івано-Франківську | ${business.name}`;
+const metaDescription = service.description.length > 155
+  ? service.description.slice(0, 152) + '...'
+  : service.description;
+
+// Build Service schema
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: service.name,
+  description: service.description,
+  provider: {
+    '@type': 'HVACBusiness',
+    name: business.name,
+    telephone: business.phone,
+    url: business.siteUrl,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: business.address.city,
+      addressRegion: business.address.state,
+      postalCode: business.address.zip,
+    },
+  },
+  areaServed: serviceAreas.map((area) => ({
+    '@type': 'City',
+    name: area.name,
+    containedInPlace: {
+      '@type': 'AdministrativeArea',
+      name: area.county,
+    },
+  })),
+};
+---
+
+<BaseLayout title={pageTitle} description={metaDescription} schema={schema}>
+  <Breadcrumbs
+    crumbs={[
+      { label: 'Послуги', href: '/services/' },
+      { label: service.name },
+    ]}
+  />
+
+  <!-- Hero section -->
+  <section class="relative overflow-hidden bg-slate-900 py-16 lg:py-24 mb-8">
+    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent z-10" />
+    <img
+      src={service.image}
+      alt={`${service.name} — ${business.name}`}
+      class="absolute inset-0 h-full w-full object-cover opacity-30 mix-blend-luminosity"
+      width="2048"
+      height="1024"
+      loading="eager"
+    />
+    <div class="relative z-20 mx-auto max-w-7xl px-5 lg:px-8">
+      <div class="max-w-3xl animate-fade-up">
+        {/* Emergency badge */}
+        {service.emergency && (
+          <div class="mb-6 inline-flex items-center gap-2 rounded-full bg-red-500/10 px-4 py-2 text-sm font-medium text-red-400 ring-1 ring-red-500/20 backdrop-blur-md">
+            <Icon name="lucide:circle-alert" class="size-4" />
+            Терміновий виклик 24/7
+          </div>
+        )}
+
+        <h1 class="font-display text-4xl text-white sm:text-5xl lg:text-6xl tracking-tight">
+          {service.name}
+        </h1>
+
+        <p class="mt-6 text-lg md:text-xl font-light leading-relaxed text-slate-300">
+          {service.description}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process steps section -->
+  <section class="bg-white py-16 lg:py-24">
+    <div class="mx-auto max-w-7xl px-5 lg:px-8">
+      <h2 class="font-display text-3xl text-slate-900 sm:text-4xl tracking-tight">
+        Як працює {service.name}
+      </h2>
+      <p class="mt-4 max-w-2xl text-slate-500">
+        Кожен проект проходить чіткий, перевірений процес, щоб ви завжди знали, чого очікувати.
+      </p>
+
+      <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {service.process.map((step, index) => (
+          <div class="relative rounded-2xl bg-slate-50 p-8 ring-1 ring-slate-100 transition-all hover:bg-white hover:shadow-xl hover:shadow-slate-200/50 hover:-translate-y-1">
+            {/* Step number */}
+            <div class="flex size-12 items-center justify-center rounded-xl bg-brand-50 text-base font-bold text-brand-600 mb-6">
+              0{index + 1}
+            </div>
+
+            <h3 class="text-lg font-display text-slate-900">
+              {step.title}
+            </h3>
+
+            <p class="mt-3 text-sm leading-relaxed text-slate-500">
+              {step.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Areas we serve for this service -->
+  <section class="mx-auto max-w-7xl px-5 py-16 lg:py-24 lg:px-8">
+    <h2 class="font-display text-3xl text-slate-900 sm:text-4xl tracking-tight">
+      Райони обслуговування для {service.name}
+    </h2>
+    <p class="mt-4 max-w-2xl text-slate-500">
+      Надаємо послуги з {service.name.toLowerCase()} по всьому {business.address.city} та околицях.
+    </p>
+
+    <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {serviceAreas.map((area) => (
+        <a
+          href={comboUrl(area.slug, service.slug)}
+          class="group flex items-center justify-between rounded-2xl bg-white px-6 py-5 ring-1 ring-slate-100 shadow-sm transition-all hover:ring-brand-500 hover:shadow-md"
+        >
+          <div>
+            <h3 class="font-display text-lg text-slate-900 group-hover:text-brand-600 transition-colors">{area.name}</h3>
+            <p class="mt-1 text-xs text-slate-400">{area.county}</p>
+          </div>
+          <Icon name="lucide:arrow-right" class="size-4 text-slate-300 transition-transform group-hover:translate-x-1 group-hover:text-brand-500" />
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA section -->
+  <section class="bg-slate-900 py-16 lg:py-24 relative overflow-hidden">
+    <div class="absolute inset-0 bg-brand-500/10 blur-[100px] pointer-events-none" />
+    <div class="relative mx-auto max-w-4xl px-5 text-center lg:px-8">
+      <h2 class="font-display text-3xl text-white sm:text-4xl tracking-tight">
+        Потрібна {service.name}?
+      </h2>
+      <p class="mx-auto mt-6 max-w-2xl text-lg text-slate-300 font-light">
+        Заповніть форму і отримайте пропозицію чи декілька від перевірених підрядників {business.address.city}. Безкоштовно.
+      </p>
+      <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a
+          href={contactUrl()}
+          class="inline-flex items-center gap-2 rounded-full bg-brand-500 px-8 py-3.5 text-sm font-medium text-white shadow-lg transition-all hover:bg-brand-400 hover:shadow-brand-500/25"
+        >
+          <Icon name="lucide:message-square" class="size-5" />
+          Отримати консультацію
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

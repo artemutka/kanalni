@@ -1,0 +1,284 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
+import { business, yearsInBusiness } from '../data/business';
+import { serviceTypes } from '../data/serviceTypes';
+import { serviceAreas } from '../data/serviceAreas';
+import { serviceUrl, areaUrl, contactUrl } from '../lib/urls';
+import { reviews } from '../data/seoContent';
+
+const years = yearsInBusiness();
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${business.siteUrl}/#website`,
+      url: business.siteUrl,
+      name: business.name,
+      description: business.description,
+      publisher: { '@id': `${business.siteUrl}/#business` },
+    },
+    {
+      '@type': 'HVACBusiness',
+      '@id': `${business.siteUrl}/#business`,
+      name: business.name,
+      url: business.siteUrl,
+      telephone: business.phone,
+      email: business.email,
+      description: business.description,
+      foundingDate: `${business.foundedYear}`,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: business.address.city,
+        addressRegion: business.address.state,
+        postalCode: business.address.zip,
+        addressCountry: business.address.country,
+      },
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: business.coordinates.lat,
+        longitude: business.coordinates.lng,
+      },
+      areaServed: serviceAreas.map((area) => ({
+        '@type': 'City',
+        name: area.name,
+        containedInPlace: {
+          '@type': 'AdministrativeArea',
+          name: area.county,
+        },
+      })),
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Послуги канального кондиціювання',
+        itemListElement: serviceTypes.map((service) => ({
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: service.name,
+            description: service.description,
+          },
+        })),
+      },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${business.siteUrl}/#webpage`,
+      url: business.siteUrl,
+      name: business.name,
+      isPartOf: { '@id': `${business.siteUrl}/#website` },
+      about: { '@id': `${business.siteUrl}/#business` },
+      description: business.description,
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="Канальне кондиціювання в Івано-Франківську | Проектування та монтаж під ключ"
+  description={business.description}
+  schema={schema}
+>
+  <!-- ============ HERO ============ -->
+  <section class="py-16 px-5 lg:px-8 mx-auto max-w-7xl">
+    <div class="relative overflow-hidden rounded-3xl bg-slate-900 p-10 text-center lg:p-16 shadow-2xl">
+    <!-- Background hero image -->
+    <div class="absolute inset-0">
+      <img
+        src="/images/hero.png"
+        alt="Монтаж канальної системи кондиціювання"
+        class="h-full w-full object-cover opacity-30 mix-blend-luminosity"
+        width="2048"
+        height="2048"
+        loading="eager"
+      />
+    </div>
+    <!-- Subtle gradient overlay -->
+    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+
+    <div class="relative mx-auto max-w-7xl">
+      <div class="max-w-3xl animate-fade-up text-left">
+        <h1 class="font-display text-4xl text-white sm:text-5xl lg:text-7xl tracking-tight">
+          Канальне кондиціювання в Івано-Франківську
+        </h1>
+        <p class="mt-6 text-lg md:text-xl font-light text-slate-300">
+          Підберемо перевіреного підрядника для проектування та монтажу канальної системи. Безкоштовно.
+        </p>
+        <div class="mt-10 flex flex-wrap gap-4">
+          <a
+            href={contactUrl()}
+            class="inline-flex items-center gap-2 rounded-full bg-brand-500 px-8 py-3.5 text-sm font-medium text-white shadow-lg transition-all hover:bg-brand-400 hover:shadow-brand-500/25"
+          >
+            <Icon name="lucide:message-square" class="size-5" />
+            Отримати консультацію
+          </a>
+          <a
+            href="/services/"
+            class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-8 py-3.5 text-sm font-medium text-white backdrop-blur-md transition-all hover:bg-white/10"
+          >
+            <Icon name="lucide:wrench" class="size-5" />
+            Наші послуги
+          </a>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- ============ STATS BAR ============ -->
+  <section class="border-b border-slate-200/50 bg-white">
+    <div class="mx-auto grid max-w-7xl grid-cols-2 gap-px sm:grid-cols-4">
+      {[
+        { icon: 'lucide:map-pin', label: `${serviceAreas.length} районів` },
+        { icon: 'lucide:wrench', label: `${serviceTypes.length} послуг` },
+        { icon: 'lucide:badge-check', label: 'Перевірені підрядники' },
+        { icon: 'lucide:gift', label: 'Безкоштовно' },
+      ].map((stat) => (
+        <div class="flex items-center justify-center gap-3 px-4 py-6">
+          <Icon name={stat.icon} class="size-5 shrink-0 text-brand-500" />
+          <span class="text-sm font-medium text-slate-700">{stat.label}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ============ HOW WE WORK ============ -->
+  <section class="py-16 lg:py-24">
+    <div class="mx-auto max-w-7xl px-5 lg:px-8">
+      <div class="text-center">
+        <h2 class="font-display text-4xl text-slate-900 tracking-tight">
+          Як це працює
+        </h2>
+        <p class="mx-auto mt-4 max-w-2xl text-slate-500">
+          Три прості кроки до ідеального клімату у вашому приміщенні
+        </p>
+      </div>
+
+      <div class="mt-16 grid gap-8 sm:grid-cols-3">
+        {[
+          {
+            icon: 'lucide:clipboard-list',
+            step: '01',
+            title: 'Заповніть форму',
+            description: 'Опишіть ваш об\'єкт: тип приміщення, площа, побажання щодо системи кондиціювання.',
+          },
+          {
+            icon: 'lucide:users',
+            step: '02',
+            title: 'Отримайте пропозиції',
+            description: 'Протягом 24 годин ви отримаєте пропозицію чи декілька від перевірених підрядників Івано-Франківська.',
+          },
+          {
+            icon: 'lucide:circle-check',
+            step: '03',
+            title: 'Оберіть найкраще',
+            description: 'Порівняйте ціни, умови та відгуки. Оберіть розв\'язання, яке найкраще підходить.',
+          },
+        ].map((item) => (
+          <div class="relative text-center group">
+            <div class="mx-auto mb-6 flex size-16 items-center justify-center rounded-2xl bg-slate-50 text-brand-500 ring-1 ring-slate-100 transition-all group-hover:bg-brand-50 group-hover:ring-brand-100">
+              <Icon name={item.icon} class="size-6" />
+            </div>
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 font-display text-7xl font-bold text-slate-50 opacity-50 pointer-events-none select-none -z-10">
+              {item.step}
+            </div>
+            <h3 class="font-display text-xl text-slate-900">{item.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-slate-500">{item.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES GRID ============ -->
+  <section class="bg-white py-16 lg:py-24">
+    <div class="mx-auto max-w-7xl px-5 lg:px-8">
+      <div class="text-center">
+        <h2 class="font-display text-4xl text-slate-900 tracking-tight">
+          Наші послуги
+        </h2>
+        <p class="mx-auto mt-4 max-w-2xl text-slate-500">
+          Повний спектр послуг з канального кондиціювання: від проектування до сервісного обслуговування.
+        </p>
+      </div>
+
+      <div class="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {serviceTypes.map((service, i) => (
+          <a
+            href={serviceUrl(service.slug)}
+            class={`card-hover group relative rounded-2xl bg-white p-8 animate-fade-up stagger-${Math.min(i + 1, 6)} ring-1 ring-slate-100 shadow-sm`}
+          >
+            {service.emergency && (
+              <span class="absolute right-6 top-6 inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-semibold text-brand-600">
+                <Icon name="lucide:zap" class="size-3" />
+                24/7
+              </span>
+            )}
+            <div class="flex size-14 items-center justify-center rounded-xl bg-slate-50 text-slate-900 transition-colors group-hover:bg-brand-500 group-hover:text-white">
+              <Icon name={service.icon} class="size-6" />
+            </div>
+            <h3 class="mt-6 font-display text-lg text-slate-900">
+              {service.name}
+            </h3>
+            <p class="mt-3 text-sm leading-relaxed text-slate-500 line-clamp-3">
+              {service.description}
+            </p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ AREAS SECTION ============ -->
+  <section class="py-20 lg:py-32">
+    <div class="mx-auto max-w-7xl px-5 lg:px-8">
+      <div class="text-center">
+        <h2 class="font-display text-4xl text-slate-900 tracking-tight">
+          Райони обслуговування
+        </h2>
+        <p class="mx-auto mt-4 max-w-2xl text-slate-500">
+          Працюємо з підрядниками по всьому {business.address.city} та навколишніх районах.
+        </p>
+      </div>
+
+      <div class="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {serviceAreas.map((area, i) => (
+          <a
+            href={areaUrl(area.slug)}
+            class={`group flex items-center justify-between rounded-2xl bg-white px-6 py-5 ring-1 ring-slate-100 shadow-sm transition-all hover:ring-brand-500 hover:shadow-md animate-fade-up stagger-${Math.min(i + 1, 6)}`}
+          >
+            <div>
+              <h3 class="font-display text-lg text-slate-900 group-hover:text-brand-600 transition-colors">{area.name}</h3>
+              <p class="mt-1 text-xs text-slate-400">{area.county}</p>
+            </div>
+            <Icon name="lucide:arrow-right" class="size-4 text-slate-300 transition-transform group-hover:translate-x-1 group-hover:text-brand-500" />
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA BANNER ============ -->
+  <section class="bg-slate-900 py-20 lg:py-24 relative overflow-hidden">
+    <!-- Abstract pattern -->
+    <div class="absolute -top-24 -right-24 size-96 bg-brand-500 rounded-full blur-[128px] opacity-20 pointer-events-none" />
+    <div class="absolute -bottom-24 -left-24 size-96 bg-brand-300 rounded-full blur-[128px] opacity-10 pointer-events-none" />
+    
+    <div class="relative mx-auto max-w-5xl px-5 text-center lg:px-8">
+      <h2 class="font-display text-4xl text-white tracking-tight">Отримайте безкоштовну консультацію</h2>
+      <p class="mx-auto mt-6 max-w-2xl text-lg text-slate-300 font-light">
+        Заповніть форму і ми підберемо пропозицію чи декілька від перевірених підрядників Івано-Франківська.
+      </p>
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <a
+          href={contactUrl()}
+          class="inline-flex items-center gap-2 rounded-full bg-brand-500 px-8 py-3.5 text-sm font-medium text-white shadow-lg transition-all hover:bg-brand-400 hover:shadow-brand-500/25"
+        >
+          <Icon name="lucide:message-square" class="size-5" />
+          Отримати консультацію
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,122 @@
+---
+import { Icon } from 'astro-icon/components';
+import { business } from '../data/business';
+import { serviceTypes } from '../data/serviceTypes';
+import { serviceAreas } from '../data/serviceAreas';
+import { serviceUrl, areaUrl } from '../lib/urls';
+---
+
+<footer class="bg-brand-950 text-white">
+  <!-- Subtle top border gradient -->
+  <div class="h-px w-full bg-gradient-to-r from-transparent via-brand-500/40 to-transparent" />
+
+  <div class="mx-auto max-w-7xl px-5 pb-10 pt-16 lg:px-8">
+    <!-- Top section: brand + tagline -->
+    <div class="border-b border-white/10 pb-10">
+      <a href="/" class="group inline-flex flex-col items-center justify-center gap-0 transition-transform hover:scale-105 duration-300">
+        <div class="w-full flex flex-col gap-[4px] mb-1.5 px-0.5">
+          <div class="h-[5px] w-full bg-white rounded-sm"></div>
+          <div class="h-[5px] w-full bg-white rounded-sm"></div>
+        </div>
+        <span class="font-display text-3xl font-bold tracking-tight text-white leading-none">
+          Канальні
+        </span>
+        <span class="text-[11px] font-bold uppercase tracking-[0.25em] text-brand-300 mt-1.5 ml-1">
+          кондиціювання
+        </span>
+      </a>
+      <p class="mt-4 max-w-md text-sm leading-relaxed text-stone-400">
+        {business.tagline}. Підберемо перевіреного підрядника для вашого проекту.
+      </p>
+    </div>
+
+    <!-- Link columns -->
+    <div class="grid gap-8 pt-10 sm:grid-cols-2 lg:grid-cols-3">
+      <!-- Column 1: Our Services -->
+      <div>
+        <h3 class="mb-4 text-xs font-semibold uppercase tracking-wider text-stone-500">
+          Послуги
+        </h3>
+        <ul class="space-y-2.5">
+          {serviceTypes.map((service) => (
+            <li>
+              <a
+                href={serviceUrl(service.slug)}
+                class="text-sm text-stone-400 transition-colors hover:text-white"
+              >
+                {service.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Column 2: Service Areas -->
+      <div>
+        <h3 class="mb-4 text-xs font-semibold uppercase tracking-wider text-stone-500">
+          Райони
+        </h3>
+        <ul class="space-y-2.5">
+          {serviceAreas.map((area) => (
+            <li>
+              <a
+                href={areaUrl(area.slug)}
+                class="text-sm text-stone-400 transition-colors hover:text-white"
+              >
+                {area.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Column 3: Contact Info -->
+      <div>
+        <h3 class="mb-4 text-xs font-semibold uppercase tracking-wider text-stone-500">
+          Контакти
+        </h3>
+        <ul class="space-y-3">
+          <li class="flex items-start gap-2.5">
+            <Icon name="lucide:map-pin" class="mt-0.5 size-4 shrink-0 text-stone-500" />
+            <span class="text-sm text-stone-400">
+              {business.address.city}, {business.address.state}
+            </span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <Icon name="lucide:mail" class="mt-0.5 size-4 shrink-0 text-stone-500" />
+            <a
+              href={`mailto:${business.email}`}
+              class="text-sm text-stone-400 transition-colors hover:text-white"
+            >
+              {business.email}
+            </a>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <Icon name="lucide:message-square" class="mt-0.5 size-4 shrink-0 text-stone-500" />
+            <a
+              href="/contact/"
+              class="text-sm text-stone-400 transition-colors hover:text-white"
+            >
+              Отримати консультацію
+            </a>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <Icon name="lucide:clock" class="mt-0.5 size-4 shrink-0 text-stone-500" />
+            <div class="text-sm text-stone-400">
+              {business.hours.map((schedule) => (
+                <p>{schedule.days}: {schedule.hours}</p>
+              ))}
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="mt-10 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 sm:flex-row">
+      <p class="text-xs text-stone-600">
+        &copy; {new Date().getFullYear()} {business.name}. Всі права захищено.
+      </p>
+    </div>
+  </div>
+</footer>
