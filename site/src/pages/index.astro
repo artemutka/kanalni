@@ -270,25 +270,39 @@ const schema = {
   <!-- ============ GLOBAL FAQ ============ -->
   <GlobalFaq />
 
-  <!-- ============ CTA BANNER ============ -->
-  <section class="bg-slate-900 py-20 lg:py-24 relative overflow-hidden">
-    <!-- Abstract pattern -->
-    <div class="absolute -top-24 -right-24 size-96 bg-brand-500 rounded-full blur-[128px] opacity-20 pointer-events-none" />
-    <div class="absolute -bottom-24 -left-24 size-96 bg-brand-300 rounded-full blur-[128px] opacity-10 pointer-events-none" />
-    
-    <div class="relative mx-auto max-w-5xl px-5 text-center lg:px-8">
-      <h2 class="font-display text-4xl text-white tracking-tight">Отримайте безкоштовну консультацію</h2>
-      <p class="mx-auto mt-6 max-w-2xl text-lg text-slate-300 font-light">
-        Заповніть форму і ми підберемо пропозицію чи декілька від перевірених підрядників Івано-Франківська.
-      </p>
-      <div class="mt-10 flex flex-wrap justify-center gap-4">
-        <a
-          href={contactUrl()}
-          class="inline-flex items-center gap-2 rounded-full bg-brand-500 px-8 py-3.5 text-sm font-medium text-white shadow-lg transition-all hover:bg-brand-400 hover:shadow-brand-500/25"
-        >
-          <Icon name="lucide:message-square" class="size-5" />
-          Отримати консультацію
-        </a>
+  <!-- ============ CTA BANNER WITH INSTALLER ============ -->
+  <section class="py-20 lg:py-24">
+    <div class="mx-auto max-w-7xl px-5 lg:px-8">
+      <div class="relative overflow-hidden rounded-3xl bg-slate-50 ring-1 ring-slate-100 shadow-sm sm:grid sm:grid-cols-2 sm:items-center">
+        <!-- Abstract Decoration -->
+        <div class="absolute -top-24 -left-24 size-96 bg-brand-200 rounded-full blur-[100px] opacity-40 pointer-events-none" />
+        
+        <!-- Text Content -->
+        <div class="relative px-8 py-12 sm:px-12 sm:py-16 lg:px-16 lg:py-24 text-center sm:text-left z-10">
+          <h2 class="font-display text-4xl text-slate-900 tracking-tight">Потрібна консультація?</h2>
+          <p class="mt-4 text-lg/relaxed text-slate-600">
+            Заповніть форму і ми підберемо пропозицію чи декілька від перевірених підрядників Івано-Франківська.
+          </p>
+          <div class="mt-8 flex flex-wrap justify-center sm:justify-start gap-4">
+            <a
+              href={contactUrl()}
+              class="inline-flex items-center gap-2 rounded-full bg-brand-500 px-8 py-3.5 text-sm font-medium text-white shadow-lg shadow-brand-500/20 transition-all hover:bg-brand-400 hover:shadow-brand-500/30 hover:-translate-y-0.5"
+            >
+              <Icon name="lucide:message-square" class="size-5" />
+              Залишити заявку
+            </a>
+          </div>
+        </div>
+
+        <!-- Installer Image -->
+        <div class="relative h-72 sm:h-full min-h-[300px] lg:min-h-[450px] flex items-end justify-center overflow-hidden">
+           <!-- The image has a light #f8fafc background. mix-blend-darken or multiply removes it against bg-slate-50 perfectly -->
+           <img 
+             src="/images/installer-cta.png" 
+             alt="Майстер з монтажу кондиціонерів" 
+             class="absolute bottom-0 w-auto h-[115%] object-contain object-bottom mix-blend-darken transform translate-y-2 lg:translate-y-4"
+           />
+        </div>
       </div>
     </div>
   </section>
