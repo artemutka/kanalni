@@ -293,6 +293,17 @@ import { serviceAreas } from '../data/serviceAreas';
 </BaseLayout>
 
 <script>
+  // Add pre-fill logic for Area and Source from URL search params (e.g. from Calculator)
+  document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const areaParam = urlParams.get('area');
+    
+    if (areaParam) {
+      const areaInput = document.getElementById('area-size') as HTMLInputElement;
+      if (areaInput) areaInput.value = areaParam;
+    }
+  });
+
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
   const successMsg = document.getElementById('contact-success');
   const submitBtn = document.getElementById('contact-submit-btn') as HTMLButtonElement | null;
@@ -328,7 +339,11 @@ import { serviceAreas } from '../data/serviceAreas';
       
       try {
         const formData = new FormData(form);
-        formData.append('source', 'Сторінка "Контакти"');
+        
+        // Grab the source from the URL or fallback to the page name
+        const urlParams = new URLSearchParams(window.location.search);
+        const sourceParam = urlParams.get('source') || 'Сторінка "Контакти"';
+        formData.append('source', sourceParam);
         
         // Combine extra fields into the message to make it readable for Telegram
         const propertyType = formData.get('property-type');
