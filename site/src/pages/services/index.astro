@@ -5,6 +5,7 @@ import { Icon } from 'astro-icon/components';
 import { business } from '../../data/business';
 import { serviceTypes } from '../../data/serviceTypes';
 import { serviceUrl, contactUrl } from '../../lib/urls';
+import CalculatorWidget from '../../components/CalculatorWidget.astro';
 ---
 
 <BaseLayout
@@ -57,6 +58,9 @@ import { serviceUrl, contactUrl } from '../../lib/urls';
       </div>
     </div>
   </section>
+
+  <!-- ============ CALCULATOR ============ -->
+  <CalculatorWidget />
 
   <!-- ============ CTA ============ -->
   <section class="bg-brand-900">

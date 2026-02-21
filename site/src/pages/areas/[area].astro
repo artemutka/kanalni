@@ -8,6 +8,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import SeoFaq from '../../components/SeoFaq.astro';
 import SeoTestimonials from '../../components/SeoTestimonials.astro';
+import CalculatorWidget from '../../components/CalculatorWidget.astro';
 
 import type { ServiceArea } from '../../data/serviceAreas';
 
@@ -130,6 +131,9 @@ const schema = {
       </div>
     </div>
   </section>
+
+  <!-- Calculator section -->
+  <CalculatorWidget />
 
   <!-- Services available in this area -->
   <section class="border-t border-stone-200/60 bg-white py-16">

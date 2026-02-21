@@ -6,6 +6,7 @@ import { serviceAreas, getAreaBySlug } from '../../data/serviceAreas';
 import { serviceUrl, areaUrl, comboUrl, contactUrl } from '../../lib/urls';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CalculatorWidget from '../../components/CalculatorWidget.astro';
 
 import type { ServiceType } from '../../data/serviceTypes';
 
@@ -126,6 +127,8 @@ const schema = {
       </div>
     </div>
   </section>
+
+  <CalculatorWidget />
 
   <!-- Areas we serve for this service -->
   <section class="mx-auto max-w-7xl px-5 py-16 lg:py-24 lg:px-8">
