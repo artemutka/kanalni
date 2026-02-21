@@ -40,8 +40,8 @@ import { serviceAreas } from '../data/serviceAreas';
               Заповніть форму і ми підберемо до 3 пропозицій від перевірених підрядників Івано-Франківська.
             </p>
 
-            <!-- Static form: replace action with API endpoint when ready -->
-            <form action="#" method="POST" class="mt-8 space-y-6">
+            <!-- Main Contact Form -->
+            <form id="contact-form" class="mt-8 space-y-6">
               <!-- Name + Phone row -->
               <div class="grid gap-6 sm:grid-cols-2">
                 <div>
@@ -293,18 +293,17 @@ import { serviceAreas } from '../data/serviceAreas';
 </BaseLayout>
 
 <script>
-  const form = document.querySelector('form') as HTMLFormElement;
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
   const successMsg = document.getElementById('contact-success');
   const submitBtn = document.getElementById('contact-submit-btn') as HTMLButtonElement | null;
   const submitText = submitBtn?.querySelector('span');
 
-  if (form && successMsg && submitBtn && submitText) {
+  if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      const originalText = submitText.innerText;
-      submitBtn.disabled = true;
-      submitText.innerText = 'Відправка...';
+      if (submitBtn) submitBtn.disabled = true;
+      if (submitText) submitText.innerText = 'Відправка...';
       
       try {
         const formData = new FormData(form);
@@ -334,16 +333,16 @@ import { serviceAreas } from '../data/serviceAreas';
 
         if (response.ok) {
           form.classList.add('hidden');
-          successMsg.classList.remove('hidden');
+          if (successMsg) successMsg.classList.remove('hidden');
         } else {
           alert('Виникла помилка при відправці. Спробуйте ще раз або зателефонуйте нам безпосередньо.');
-          submitBtn.disabled = false;
-          submitText.innerText = originalText;
+          if (submitBtn) submitBtn.disabled = false;
+          if (submitText) submitText.innerText = 'Отримати безкоштовну консультацію';
         }
       } catch (error) {
         alert('Помилка з\'єднання. Перевірте підключення до інтернету.');
-        submitBtn.disabled = false;
-        submitText.innerText = originalText;
+        if (submitBtn) submitBtn.disabled = false;
+        if (submitText) submitText.innerText = 'Отримати безкоштовну консультацію';
       }
     });
   }
