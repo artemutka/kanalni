@@ -172,12 +172,27 @@ import { serviceAreas } from '../data/serviceAreas';
               <!-- Submit -->
               <button
                 type="submit"
-                class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-800 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-brand-700 hover:shadow-md sm:w-auto"
+                id="contact-submit-btn"
+                class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-800 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-brand-700 hover:shadow-md sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Icon name="lucide:send" class="size-4" />
-                Отримати безкоштовну консультацію
+                <span>Отримати безкоштовну консультацію</span>
               </button>
             </form>
+
+            <!-- Success State (Hidden by Default) -->
+            <div id="contact-success" class="mt-8 hidden overflow-hidden rounded-xl border border-brand-200 bg-brand-50 p-6 sm:p-8">
+              <div class="flex items-center gap-4">
+                <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-brand-100">
+                  <Icon name="lucide:check-circle-2" class="size-6 text-brand-600" />
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-brand-900">Заявку успішно відправлено!</h3>
+                  <p class="mt-1 text-sm text-brand-700">Ми зв'яжемося з вами найближчим часом для уточнення деталей.</p>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -276,3 +291,60 @@ import { serviceAreas } from '../data/serviceAreas';
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const form = document.querySelector('form') as HTMLFormElement;
+  const successMsg = document.getElementById('contact-success');
+  const submitBtn = document.getElementById('contact-submit-btn') as HTMLButtonElement | null;
+  const submitText = submitBtn?.querySelector('span');
+
+  if (form && successMsg && submitBtn && submitText) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const originalText = submitText.innerText;
+      submitBtn.disabled = true;
+      submitText.innerText = 'Відправка...';
+      
+      try {
+        const formData = new FormData(form);
+        formData.append('source', 'Сторінка "Контакти"');
+        
+        // Combine extra fields into the message to make it readable for Telegram
+        const propertyType = formData.get('property-type');
+        const areaSize = formData.get('area-size');
+        const service = formData.get('service');
+        const area = formData.get('area');
+        const email = formData.get('email');
+        
+        let extraInfo = '';
+        if (propertyType) extraInfo += `\n🏠 Тип об'єкта: ${propertyType}`;
+        if (areaSize) extraInfo += `\n📏 Площа: ${areaSize} м2`;
+        if (service) extraInfo += `\n🛠 Послуга: ${service}`;
+        if (area) extraInfo += `\n📍 Район: ${area}`;
+        if (email) extraInfo += `\n✉️ Email: ${email}`;
+
+        const existingMessage = formData.get('message') || '—';
+        formData.set('message', existingMessage + (extraInfo ? '\n\n--- Додаткові деталі ---' + extraInfo : ''));
+
+        const response = await fetch('/api/submit', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (response.ok) {
+          form.classList.add('hidden');
+          successMsg.classList.remove('hidden');
+        } else {
+          alert('Виникла помилка при відправці. Спробуйте ще раз або зателефонуйте нам безпосередньо.');
+          submitBtn.disabled = false;
+          submitText.innerText = originalText;
+        }
+      } catch (error) {
+        alert('Помилка з\'єднання. Перевірте підключення до інтернету.');
+        submitBtn.disabled = false;
+        submitText.innerText = originalText;
+      }
+    });
+  }
+</script>

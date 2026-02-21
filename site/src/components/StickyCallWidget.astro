@@ -171,7 +171,7 @@ const minutes = ['00', '15', '30', '45'];
         phoneInput.setCustomValidity('');
       });
 
-      form.addEventListener('submit', (e) => {
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
         // Strip everything except digits
@@ -185,12 +185,47 @@ const minutes = ['00', '15', '30', '45'];
           isValid = true;
         }
 
-        if (isValid) {
-          document.getElementById('callback-form-container')?.classList.add('hidden');
-          document.getElementById('callback-success')?.classList.remove('hidden');
-        } else {
+        if (!isValid) {
           phoneInput.setCustomValidity('Введіть коректний український номер (рівно 10 цифр, наприклад: 050 123 45 67)');
           phoneInput.reportValidity();
+          return;
+        }
+
+        // Prepare data for API
+        const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+        const originalText = submitBtn.innerText;
+        submitBtn.innerText = 'Відправка...';
+        submitBtn.disabled = true;
+
+        try {
+          const formData = new FormData(form);
+          const day = formData.get('day');
+          const timeHour = formData.get('time-hour');
+          const timeMinute = formData.get('time-minute');
+          const phone = formData.get('phone');
+
+          const payload = new FormData();
+          payload.append('source', 'Липкий віджет (Передзвоніть мені)');
+          payload.append('phone', phone as string);
+          payload.append('message', `Клієнт просить зателефонувати йому: ${day} о ${timeHour}:${timeMinute}`);
+
+          const response = await fetch('/api/submit', {
+            method: 'POST',
+            body: payload
+          });
+
+          if (response.ok) {
+            document.getElementById('callback-form-container')?.classList.add('hidden');
+            document.getElementById('callback-success')?.classList.remove('hidden');
+          } else {
+            alert('Виникла помилка при відправці. Спробуйте ще раз або зателефонуйте нам безпосередньо.');
+            submitBtn.innerText = originalText;
+            submitBtn.disabled = false;
+          }
+        } catch (error) {
+          alert('Помилка з\'єднання. Перевірте підключення до інтернету.');
+          submitBtn.innerText = originalText;
+          submitBtn.disabled = false;
         }
       });
     }
