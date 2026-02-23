@@ -151,6 +151,9 @@ async function generateBlogPosts() {
         }
         markdownContent = markdownContent.trim();
 
+        // Примусово замінюємо будь-яку дату, згенеровану ШІ, на сьогоднішню
+        markdownContent = markdownContent.replace(/publishDate:\s*["'].*?["']/, `publishDate: "${today}"`);
+
         // Перевірка на Frontmatter (повинен починатися з ---)
         if (!markdownContent.startsWith('---')) {
             console.warn(`[Blog Generator] УВАГА: Згенерований текст не починається з Frontmatter!`);
