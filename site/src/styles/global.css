@@ -45,7 +45,8 @@
   --color-amber-200: #f1f5f9;
   --color-amber-300: #e2e8f0;
   --color-amber-400: #cbd5e1;
-  --color-amber-500: #0f172a; /* Main dark button */
+  --color-amber-500: #0f172a;
+  /* Main dark button */
   --color-amber-600: #020617;
   --color-amber-700: #020617;
   --color-amber-800: #020617;
@@ -68,6 +69,7 @@
     opacity: 0;
     transform: translateY(24px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -78,6 +80,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -88,6 +91,7 @@
     opacity: 0;
     transform: translateY(-12px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -99,6 +103,7 @@
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -172,6 +177,7 @@
    ============================================================ */
 
 @layer components {
+
   /* Editorial line decorative bar */
   .editorial-line::before {
     content: '';
@@ -211,15 +217,15 @@
   }
 
   .prose-editorial h2 {
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-    font-size: 1.625rem;
+    margin-top: 3rem;
+    margin-bottom: 1.25rem;
+    font-size: 1.75rem;
   }
 
   .prose-editorial h3 {
-    margin-top: 2rem;
-    margin-bottom: 0.75rem;
-    font-size: 1.25rem;
+    margin-top: 2.25rem;
+    margin-bottom: 1rem;
+    font-size: 1.35rem;
   }
 
   .prose-editorial a {
@@ -233,20 +239,31 @@
   }
 
   .prose-editorial blockquote {
-    border-left: 3px solid var(--color-brand-400);
-    padding-left: 1.25rem;
+    border-left: 4px solid var(--color-brand-400);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
     font-style: italic;
     color: var(--color-stone-600);
+    background: var(--color-stone-50);
+    padding: 1.5rem;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+  }
+
+  .prose-editorial p {
+    margin-bottom: 1.5rem;
   }
 
   .prose-editorial ul {
     list-style-type: disc;
     padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
   }
 
   .prose-editorial ol {
     list-style-type: decimal;
     padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
   }
 
   .prose-editorial li {

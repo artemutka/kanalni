@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
 import { blogUrl, contactUrl } from '../../lib/urls';
 import { business } from '../../data/business';
 import { Icon } from 'astro-icon/components';
@@ -15,7 +16,7 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 
 const categoryColors: Record<string, { bg: string; text: string }> = {
   emergency: { bg: 'bg-red-100', text: 'text-red-700' },
@@ -73,9 +74,9 @@ const schema = {
     ]}
   />
 
-  <article class="mx-auto max-w-3xl px-5 py-10 lg:px-8 lg:py-16">
+  <article class="mx-auto max-w-5xl px-5 py-10 lg:px-8 lg:py-16">
     <!-- Article header -->
-    <header class="pb-8">
+    <header class="pb-8 lg:pb-12 border-b border-stone-200">
       <div class="flex flex-wrap items-center gap-3">
         <span class={`inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize ${colors.bg} ${colors.text}`}>
           {post.data.category}
@@ -88,11 +89,11 @@ const schema = {
         )}
       </div>
 
-      <h1 class="mt-4 font-display text-3xl text-brand-900 sm:text-4xl">
+      <h1 class="mt-4 font-display text-3xl text-brand-900 sm:text-4xl lg:text-5xl leading-tight">
         {post.data.title}
       </h1>
 
-      <div class="mt-4 flex items-center gap-3 text-sm text-stone-500">
+      <div class="mt-6 flex items-center gap-3 text-sm text-stone-500">
         <div class="flex items-center gap-1.5">
           <Icon name="lucide:calendar" class="size-4" />
           <time datetime={post.data.publishDate}>
@@ -107,7 +108,7 @@ const schema = {
       </div>
 
       {post.data.tags.length > 0 && (
-        <div class="mt-4 flex flex-wrap gap-2">
+        <div class="mt-5 flex flex-wrap gap-2">
           {post.data.tags.map((tag: string) => (
             <span class="rounded-full border border-stone-200 bg-stone-50 px-2.5 py-0.5 text-xs text-stone-500">
               {tag}
@@ -117,12 +118,18 @@ const schema = {
       )}
     </header>
 
-    <!-- Article body -->
-    <div class="prose-editorial">
-      <Content />
-    </div>
-
-    <!-- CTA at bottom of every post -->
+    <div class="mt-10 lg:grid lg:grid-cols-[1fr_280px] lg:gap-16 items-start">
+      <!-- Article body -->
+      <div class="min-w-0">
+        <!-- Desktop ToC goes on right, Mobile ToC goes here -->
+        <div class="lg:hidden">
+          <TableOfContents headings={headings} />
+        </div>
+        <div class="prose-editorial">
+          <Content />
+        </div>
+        
+        <!-- CTA at bottom of every post -->
     <div class="mt-12 rounded-xl border border-brand-200 bg-brand-50 p-6 lg:p-8">
       <h2 class="font-display text-xl text-brand-900">
         Потрібна консультація?
@@ -141,5 +148,12 @@ const schema = {
         </a>
       </div>
     </div>
+      </div> <!-- End min-w-0 for main content -->
+
+      <!-- Sidebar Table of Contents (Desktop only) -->
+      <aside class="hidden lg:block border-l border-stone-100 pl-8 h-full">
+        <TableOfContents headings={headings} />
+      </aside>
+    </div> <!-- End grid -->
   </article>
 </BaseLayout>
