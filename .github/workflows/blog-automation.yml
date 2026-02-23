@@ -1,0 +1,52 @@
+name: Automate Blog Content Generation
+
+on:
+  schedule:
+    # Запуск щопонеділка та щочетверга о 05:00 UTC (це 07:00 / 08:00 за київським часом)
+    - cron: '0 5 * * 1,4'
+  workflow_dispatch:
+    # Дозволяє запускати пайплайн вручну через інтерфейс GitHub
+
+jobs:
+  generate-blog:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          # Важливо: токен потрібен для пушу назад у репозиторій
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'site/package-lock.json'
+          
+      - name: Install dependencies
+        working-directory: ./site
+        run: npm ci || npm install
+        
+      - name: Generate New Blog Post
+        working-directory: ./site
+        # Запускаємо скрипт. Передаємо секрет з GitHub Secrets
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: npm run generate-blog
+        
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "AI Blog Bot"
+          git config --global user.email "bot@kanalni.if.ua"
+          
+          # Перевіряємо, чи є нові файли
+          if [[ -n $(git status -s site/src/content/blog) ]]; then
+            git add site/src/content/blog/
+            git commit -m "📝 Auto-generated new blog post via Gemini API"
+            git push origin HEAD:${{ github.ref }}
+            echo "Successfully generated and pushed a new blog post."
+          else
+            echo "No new blog posts were generated. All keywords might be exhausted."
+          fi
