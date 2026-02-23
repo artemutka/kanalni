@@ -61,7 +61,7 @@ const PROMPT_TEMPLATE = `Ти — SEO-експерт та досвідчений
 5. **Внутрішня перелінковка**: 
    - Додай 2-3 органічних лінки в тексті. Використовуй ТІЛЬКИ існуючі послуги. 
    - Доступні URL: \`/services/montazh-kanalnoho-kondycionera/\` (установка/монтаж), \`/services/proektuvannya-kondyciyuvannya/\` (проектування вентиляції/кондиціювання), \`/services/montazh-ventylyaciyi/\` (вентиляція), \`/services/obsluhovuvannya/\` (сервіс/чистка).
-   - Для згадок Івано-Франківська використовуй формат \`/services/ivano-frankivsk/montazh-kanalnoho-kondycionera/\` або іншу послугу замість \`montazh-kanalnoho-kondycionera\`. Ніколи не використовуй example.com.
+   - Для згадок Івано-Франківська використовуй посилання на контакти \`/contact/\` або головну \`/\`. Ніколи не вигадуй неіснуючі URL та не додавай \`ivano-frankivsk\` як частину посилання послуги.
 
 Твоя відповідь має складатися ЛИШЕ з готового Markdown-файлу. Вона повинна починатися з Frontmatter блоку. Категорію обери з: emergency, tips, maintenance, news.
 
