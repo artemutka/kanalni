@@ -5,8 +5,8 @@ interface Props {
 
 const { headings } = Astro.props;
 
-// Filter out h1 (usually the post title) and mostly keep h2 and h3
-const tocHeadings = headings.filter((h) => h.depth > 1 && h.depth <= 3);
+// Filter out h1 (usually the post title) and keep only h2
+const tocHeadings = headings.filter((h) => h.depth === 2);
 ---
 
 {tocHeadings.length > 0 && (
