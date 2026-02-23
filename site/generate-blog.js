@@ -59,7 +59,9 @@ const PROMPT_TEMPLATE = `Ти — SEO-експерт та досвідчений
    - Аудиторія: власники будинків або квартир, які планують встановлення кліматичних систем або вентиляції.
    - Локація компанії (якщо доречно згадати): Івано-Франківськ та область.
 5. **Внутрішня перелінковка**: 
-   - Залиш 2-3 органічних лінки в тексті. Використовуй формат Markdown: [назва сервісу](/services/slug-послуги/) або [в Івано-Франківську](/areas/ivano-frankivsk/). (Просто використовуй загальні логічні slug-и типу /services/montazh-kondytsioneriv/ чи /services/proektuvannya-ventylyatsiyi/).
+   - Додай 2-3 органічних лінки в тексті. Використовуй ТІЛЬКИ існуючі послуги. 
+   - Доступні URL: \`/services/montazh-kanalnoho-kondycionera/\` (установка/монтаж), \`/services/proektuvannya-kondyciyuvannya/\` (проектування вентиляції/кондиціювання), \`/services/montazh-ventylyaciyi/\` (вентиляція), \`/services/obsluhovuvannya/\` (сервіс/чистка).
+   - Для згадок Івано-Франківська використовуй формат \`/services/ivano-frankivsk/montazh-kanalnoho-kondycionera/\` або іншу послугу замість \`montazh-kanalnoho-kondycionera\`. Ніколи не використовуй example.com.
 
 Твоя відповідь має складатися ЛИШЕ з готового Markdown-файлу. Вона повинна починатися з Frontmatter блоку. Категорію обери з: emergency, tips, maintenance, news.
 
