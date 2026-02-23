@@ -16,6 +16,10 @@ export interface ServiceArea {
   slug: string;
   /** Display name, e.g. "North Austin" */
   name: string;
+  /** Locative case name (Місцевий відмінок) with preposition, e.g. "в Пасічній", "в Угорниках" */
+  locativeName: string;
+  /** Type of area for accurate prefixes, e.g. "мікрорайон", "село" */
+  areaType: string;
   /** County or broader region name for grouping */
   county: string;
   /** State abbreviation, e.g. "TX" */
@@ -61,6 +65,8 @@ export const serviceAreas: ServiceArea[] = [
   {
     slug: 'centr',
     name: 'Центр',
+    locativeName: 'в Центрі',
+    areaType: 'мікрорайон',
     county: 'Івано-Франківська область',
     state: 'IF',
     zipCodes: ['76000', '76002', '76003'],
@@ -75,6 +81,8 @@ export const serviceAreas: ServiceArea[] = [
   {
     slug: 'pasichna',
     name: 'Пасічна',
+    locativeName: 'в Пасічній',
+    areaType: 'мікрорайон',
     county: 'Івано-Франківська область',
     state: 'IF',
     zipCodes: ['76006', '76014'],
@@ -89,6 +97,8 @@ export const serviceAreas: ServiceArea[] = [
   {
     slug: 'kaskad',
     name: 'Каскад',
+    locativeName: 'на Каскаді',
+    areaType: 'мікрорайон',
     county: 'Івано-Франківська область',
     state: 'IF',
     zipCodes: ['76007'],
@@ -103,6 +113,8 @@ export const serviceAreas: ServiceArea[] = [
   {
     slug: 'uhornyky',
     name: 'Угорники',
+    locativeName: 'в Угорниках',
+    areaType: 'село',
     county: 'Івано-Франківська область',
     state: 'IF',
     zipCodes: ['76008'],
@@ -117,6 +129,8 @@ export const serviceAreas: ServiceArea[] = [
   {
     slug: 'krykhivci',
     name: 'Крихівці',
+    locativeName: 'в Крихівцях',
+    areaType: 'село',
     county: 'Івано-Франківська область',
     state: 'IF',
     zipCodes: ['76009'],
@@ -131,6 +145,8 @@ export const serviceAreas: ServiceArea[] = [
   {
     slug: 'opryshivci',
     name: 'Опришівці',
+    locativeName: 'в Опришівцях',
+    areaType: 'мікрорайон',
     county: 'Івано-Франківська область',
     state: 'IF',
     zipCodes: ['76010'],
@@ -145,6 +161,8 @@ export const serviceAreas: ServiceArea[] = [
   {
     slug: 'vovchynec',
     name: 'Вовчинець',
+    locativeName: 'у Вовчинці',
+    areaType: 'село',
     county: 'Івано-Франківська область',
     state: 'IF',
     zipCodes: ['76011'],
@@ -159,6 +177,8 @@ export const serviceAreas: ServiceArea[] = [
   {
     slug: 'khryplyn',
     name: 'Хриплин',
+    locativeName: 'в Хриплині',
+    areaType: 'село',
     county: 'Івано-Франківська область',
     state: 'IF',
     zipCodes: ['76012'],
@@ -173,6 +193,8 @@ export const serviceAreas: ServiceArea[] = [
   {
     slug: 'mykytynici',
     name: 'Микитинці',
+    locativeName: 'в Микитинцях',
+    areaType: 'село',
     county: 'Івано-Франківська область',
     state: 'IF',
     zipCodes: ['76013'],
@@ -187,6 +209,8 @@ export const serviceAreas: ServiceArea[] = [
   {
     slug: 'drahomyrchany',
     name: 'Драгомирчани',
+    locativeName: 'в Драгомирчанах',
+    areaType: 'село',
     county: 'Івано-Франківська область',
     state: 'IF',
     zipCodes: ['76015'],

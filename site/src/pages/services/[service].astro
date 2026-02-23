@@ -7,6 +7,9 @@ import { serviceUrl, areaUrl, comboUrl, contactUrl } from '../../lib/urls';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import CalculatorWidget from '../../components/CalculatorWidget.astro';
+import ExpertImageCard from '../../components/ExpertImageCard.astro';
+import SeoFaq from '../../components/SeoFaq.astro';
+import SeoTestimonials from '../../components/SeoTestimonials.astro';
 
 import type { ServiceType } from '../../data/serviceTypes';
 
@@ -97,6 +100,40 @@ const schema = {
     </div>
   </section>
 
+  <!-- E-E-A-T Expert Section (Unique content per service) -->
+  <section class="py-16 lg:py-24 bg-slate-50 border-y border-slate-200/50">
+    <div class="mx-auto max-w-7xl px-5 lg:px-8">
+      <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center flex flex-col-reverse">
+        
+        <!-- Text & Facts (Unique to this service) -->
+        <div class="animate-fade-up">
+          <h2 class="font-display text-3xl sm:text-4xl text-slate-900 tracking-tight mb-6">
+            Експертний підхід до послуги "{service.name}"
+          </h2>
+          
+          <div class="prose prose-slate prose-lg max-w-none text-slate-600">
+            <p>
+              Обираючи професіоналів для виконання робіт типу "{service.name.toLowerCase()}", важливо довіряти перевіреним спеціалістам з інженерною освітою та практичним досвідом.
+            </p>
+            <p>
+              {service.description} Наші партнери в Івано-Франківську суворо дотримуються технічних регламентів та стандартів безпеки, щоб забезпечити довговічну та надійну роботу обладнання у вашому домі чи офісі.
+            </p>
+            
+            <div class="mt-8 rounded-2xl bg-white p-6 ring-1 ring-slate-200 shadow-sm border-l-4 border-l-brand-500">
+              <p class="text-sm italic text-slate-600 mb-0">
+                "{service.name} — це відповідальний процес. Ми гарантуємо, що підберемо для вас лише тих підрядників, які мають підтверджене портфоліо подібних об'єктів та забезпечують офіційну гарантію на монтажні роботи."
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real-world Image (E-E-A-T Experience Signal) -->
+        <ExpertImageCard />
+
+      </div>
+    </div>
+  </section>
+
   <!-- Process steps section -->
   <section class="bg-white py-16 lg:py-24">
     <div class="mx-auto max-w-7xl px-5 lg:px-8">
@@ -176,4 +213,15 @@ const schema = {
       </div>
     </div>
   </section>
+
+  <!-- SEO Components for Service Pages -->
+  <section class="pb-8 bg-white">
+    <div class="mx-auto max-w-7xl px-5 lg:px-8 pt-16">
+       <!-- Passing the first area (Івано-Франківськ) to satisfy the component props for generic service pages -->
+      <SeoTestimonials area={serviceAreas[0]} service={service} />
+    </div>
+  </section>
+
+  <SeoFaq area={serviceAreas[0]} service={service} />
+
 </BaseLayout>

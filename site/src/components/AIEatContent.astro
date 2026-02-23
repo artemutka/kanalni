@@ -1,0 +1,65 @@
+---
+import { Icon } from 'astro-icon/components';
+import { business } from '../data/business';
+import ExpertImageCard from './ExpertImageCard.astro';
+---
+
+<section class="py-16 lg:py-24 bg-slate-50 border-y border-slate-200/50">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+      
+      <!-- Text & Facts (AI Citation Readiness & E-E-A-T) -->
+      <div class="animate-fade-up">
+        <h2 class="font-display text-3xl sm:text-4xl text-slate-900 tracking-tight mb-6">
+          Чому канальні кондиціонери — це стандарт для сучасних інтер'єрів в {business.address.city}?
+        </h2>
+        
+        <div class="prose prose-slate prose-lg max-w-none text-slate-600">
+          <p>
+            Канальне кондиціювання повністю приховане за підвісною стелею. На відміну від звичайних настінних спліт-систем, видимими залишаються лише естетичні вентиляційні решітки або лінійні дифузори. 
+          </p>
+          
+          <ul class="mt-8 space-y-4 list-none pl-0">
+            <li class="flex gap-4">
+              <div class="mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-600">
+                <Icon name="lucide:wind" class="size-4" />
+              </div>
+              <div>
+                <strong class="text-slate-900 block font-display">Рівномірний розподіл повітря</strong>
+                <span>Одна зовнішня система може охолоджувати або обігрівати одразу 3-5 кімнат без протягів.</span>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <div class="mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-600">
+                <Icon name="lucide:leaf" class="size-4" />
+              </div>
+              <div>
+                <strong class="text-slate-900 block font-display">До 30% економії енергії</strong>
+                <span>Інверторні компресори преміум-класу (Daikin, Mitsubishi, Gree) споживають менше електрики при охолодженні великих площ.</span>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <div class="mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-600">
+                <Icon name="lucide:volume-x" class="size-4" />
+              </div>
+              <div>
+                <strong class="text-slate-900 block font-display">Абсолютна тиша (від 19 дБ)</strong>
+                <span>Внутрішній блок шумоізолюється та ховається в гардеробній або коридорі, забезпечуючи комфортний сон.</span>
+              </div>
+            </li>
+          </ul>
+
+          <div class="mt-8 rounded-2xl bg-white p-6 ring-1 ring-slate-200 shadow-sm border-l-4 border-l-brand-500">
+            <p class="text-sm italic text-slate-600 mb-0">
+              "Монтаж канальної системи вентиляції вимагає точного інженерного розрахунку аеродинаміки. Саме тому ми об'єднуємо замовників лише з перевіреними інжиніринговими компаніями Івано-Франківська, які мають щонайменше 5 років підтвердженого досвіду."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-world Image (E-E-A-T Experience Signal) -->
+      <ExpertImageCard />
+
+    </div>
+  </div>
+</section>
