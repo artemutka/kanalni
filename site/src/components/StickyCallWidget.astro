@@ -145,9 +145,50 @@ const minutes = ['00', '15', '30', '45'];
     }
   };
 
+  // Dynamic time initialization based on current time
+  const initTimeSelects = () => {
+    const hourSelect = document.querySelector('select[name="time-hour"]') as HTMLSelectElement | null;
+    const minuteSelect = document.querySelector('select[name="time-minute"]') as HTMLSelectElement | null;
+    
+    if (!hourSelect || !minuteSelect) return;
+
+    const now = new Date();
+    let currentHour = now.getHours();
+    let currentMinute = now.getMinutes();
+
+    // Round up to the nearest 15 minutes
+    let targetMinuteOptions = [0, 15, 30, 45];
+    let nextMinute = targetMinuteOptions.find(m => m > currentMinute);
+    
+    if (nextMinute === undefined) {
+      // It's past 45, so we need the next hour
+      nextMinute = 0;
+      currentHour += 1;
+    }
+
+    // Handle end of day constraints (e.g., if it's 18:00 or later)
+    // We only adjust if within working hours. If it's outside working hours, 
+    // it defaults to next day 10:00, which we can set as a fallback
+    let targetHourString = currentHour.toString().padStart(2, '0');
+    let targetMinuteString = nextMinute.toString().padStart(2, '0');
+
+    // Make sure the target hour exists in our options (9-18)
+    const validHours = Array.from(hourSelect.options).map(opt => opt.value);
+    
+    if (!validHours.includes(targetHourString)) {
+      targetHourString = '10'; // Fallback to 10:00 morning
+      targetMinuteString = '00';
+    }
+
+    // Set values
+    hourSelect.value = targetHourString;
+    minuteSelect.value = targetMinuteString;
+  };
+
   // Widget initialization
   const initWidget = () => {
     initDaySelect();
+    initTimeSelects();
     
     const widget = document.getElementById('sticky-callback-widget');
     if (!widget) return;
